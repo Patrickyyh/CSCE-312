@@ -1,0 +1,33 @@
+// NAME and UIN
+// Yuhao Ye 
+// 529006730
+
+
+
+// if load == 1 writ in into the addr for acceess in the next
+// time unit 
+// else {return value store in the address}
+// 00 - Ram 32
+// 01 - Ram 32
+// 10 - Screen
+// 11 ignore
+CHIP Memory {
+	
+  IN  in[16],    	// Data to be written into memory
+	  load,      	// Variable which decides whether to write to memory or not
+	  address[16];	// Address for the register which we want access
+  
+  OUT out[16];    	// Output from the memory
+
+  PARTS:
+
+  
+  DMux4Way(in=load, sel=address[14..15], a=ramfirst, b=ramSecond, c=dscreen, d=ignore);
+  Or(a=ramfirst, b=ramSecond, out=ram1);
+  RAM32K(in = in  , load = ram1  ,address  = address[0..14] , out = ramout);
+  Screen(in=in, load=dscreen, address=address[0..12], out=screenOut);
+  Keyboard(out=keyboardOut);
+  Mux4Way16(a=ramout, b=ramout, c=screenOut, d=keyboardOut, sel=address[14..15], out=out);
+
+
+}

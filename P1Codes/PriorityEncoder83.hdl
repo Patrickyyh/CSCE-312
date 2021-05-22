@@ -1,0 +1,68 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/PriorityEncoder83.hdl
+// Yuhao Ye
+// Uin: 529006730
+
+CHIP PriorityEncoder83 {
+    IN a[8];
+    OUT out[3],idle;
+
+    PARTS:
+    // Put your code here:
+    // 1. get the not of every bit
+     Not(in=a[0], out=not0);
+     Not(in=a[1], out=not1);
+     Not(in=a[2], out=not2);
+     Not(in=a[3], out=not3);
+     Not(in=a[4], out=not4);
+     Not(in=a[5], out=not5);
+     Not(in=a[6], out=not6);
+     Not(in=a[7], out=not7);
+  
+  // output out[2] // 　7 + p76 + p7p65 + p7p6p54
+
+   // 
+     And(a=not7, b=not6, out=p7p6);
+     And(a=p7p6, b=not5, out=p7p6p5);
+     And(a=p7p6p5, b=a[4], out=p7p6p54);
+
+     // p7p65
+     And(a=p7p6, b=a[5], out=p7p65);
+
+     // p76 
+     And(a=not7, b=a[6], out=p76);
+
+     Or(a=a[7], b=p76, out=or7p76);
+     Or(a=p7p65, b=p7p6p54, out=orp7p65p7p6p54);
+     Or(a=or7p76, b=orp7p65p7p6p54, out=out[2]);
+
+
+    // output out[1] // p7p6p5p4p32 + p7p6p5p43 + p76 + 7
+      //  
+       And(a=p7p6p5 ,b=not4, out=p7p6p5p4);
+       And(a=p7p6p5p4, b=not3, out=p7p6p5p4p3);
+       And(a=p7p6p5p4p3, b=a[2], out=p7p6p5p4p32);
+
+       And(a=p7p6p5p4, b=a[3], out=p7p6p5p43);
+
+       Or(a=p7p6p5p4p32, b=p7p6p5p43, out=orp7p6p5p4p32p7p6p5p43);
+       Or(a=orp7p6p5p4p32p7p6p5p43, b=or7p76, out=out[1]);
+
+
+    // output out[0] p7p6p5p4p3p21 + p7p6p5p43 + p7p65 + 7
+
+      And(a=p7p6p5p4p3, b=not2, out=p7p6p5p4p3p2);
+      And(a=p7p6p5p4p3p2, b=a[1], out=p7p6p5p4p3p21 );
+      
+      Or(a=p7p6p5p43, b=p7p6p5p4p3p21 , out=orp7p6p5p43p7p6p5p4p3p21);
+      Or(a=p7p65, b=a[7], out=orp7p657);
+      Or(a=orp7p6p5p43p7p6p5p4p3p21, b=orp7p657, out=out[0]);
+
+    // idle
+      And(a=p7p6p5p4p3p2, b=not1, out=p7p6p5p4p3p2p1);
+      And(a=p7p6p5p4p3p2p1, b=not0, out=idle);
+
+
+}

@@ -1,0 +1,31 @@
+// Name and UIN
+/**
+ * Adds or Subtracts two 4-bit values.
+ * You may have to implement some chips or additional logic to get all of the pieces you need
+ */
+
+
+
+
+// Student: Yuhao Ye
+// UIN: 529006730
+// Email: yeyuhao1234@tamu.edu
+// Section : 599
+
+
+// Add Sub4 is composed of a MUX and Rca4 
+// Since I already finished the RCA4 in the previous part of the lab 
+// so used it directly 
+
+CHIP AddSub4 {
+    IN a[4], b[4], sub;
+    OUT out[4],carry;
+
+    PARTS: 
+   // Put you code here:
+   Negation(in[0..3]=b,out[0..3] = notb );
+   Mux4(a=notb, b=b, sel=sub, out=finalb);
+   Add4(a=a, b=finalb, carryin=false, out=out,carry=carry );
+ 
+
+}

@@ -1,0 +1,37 @@
+// Yuhao Ye 
+// 529006730
+// Program Counter
+
+/**
+ * A 16-bit counter with load and reset control bits.
+ * if      (reset[t] == 1) out[t+1] = 0
+ * else if (load[t] == 1)  out[t+1] = in[t]
+ * else if (inc[t] == 1)   out[t+1] = out[t] + 1  (integer addition)
+ * else                    out[t+1] = out[t]
+ */
+
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+
+    // load implementation
+    Mux16(a=Incout, b=in, sel=load, out=outlLoad);
+   
+   // reset implementation
+    Mux16(a=outlLoad, b=false, sel=reset, out=outReset);
+
+   // register
+   Register(in=outReset, load=true,out = outReturn,out = out);
+  
+   // increment implementation
+   Inc16(in=outReturn, out=increResult);
+   Mux16(a=outReturn, b=increResult, sel=inc, out=Incout);
+    
+
+
+
+
+}

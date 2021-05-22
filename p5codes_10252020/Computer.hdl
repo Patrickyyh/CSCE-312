@@ -1,0 +1,31 @@
+// NAME AND UIN
+// Yuhao Ye
+// 529006730
+
+
+CHIP Computer{
+	
+	IN Reset;
+
+	PARTS:
+
+//ROM Start
+
+//*******REPLACE THIS LINE WITH THE CODE TO INSTANTIATE ROM32K*********//
+   ROM32K(address=PCOut, out=In);
+
+//ROM End
+
+//CPU Start
+
+	CPU(fromM=fromM, In=In, Reset=Reset, toM=toM, writeM=writeM, addressM=addressM, PCOut[0..14]=PCOut );
+
+//CPU End
+
+//Data Memory Start
+
+	Memory(in=toM, load=writeM, address=addressM, out=fromM );
+
+//Data Memory End
+
+}

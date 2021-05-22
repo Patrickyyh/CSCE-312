@@ -1,0 +1,26 @@
+//Name and UIN
+
+//Negation.hdl
+
+/**
+ * Negate a 16-bit number, be aware that first bit is the sign-bit. 
+ * 2’s complement of the input 
+ */
+
+
+// Student: Yuhao Ye
+// UIN: 529006730
+// Email: yeyuhao1234@tamu.edu
+// Section : 599
+
+
+
+CHIP Negation {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+	// Put you code here:
+    Not16(in=in, out=temp);
+    Inc16(in=temp, out=out);
+}

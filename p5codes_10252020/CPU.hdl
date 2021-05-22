@@ -1,0 +1,92 @@
+// Name and UIN
+// Yuhao Ye
+// 529006730
+
+CHIP CPU{
+
+    IN  fromM[16],          // M value input  (M = contents of RAM[Address])
+        In[16],    	        // Instruction for execution
+        Reset;              // Signals whether to re-start the current
+                            // program (Reset==1) or continue executing
+                            // the current program (Reset==0).
+
+    OUT toM[16],            // M value output
+        writeM,             // Write to M 
+        addressM[16],       // Address in data memory (of M)
+        PCOut[16];          // address of next instruction
+
+    PARTS:
+
+
+
+
+        DMux4Way(in= true, sel=In[14..15], a=arthPart, b=logicalPart, c=MemoryAndBranch, d=inputOroutput);
+        DMux4Way(in=MemoryAndBranch, sel=In[12..13], a=read1, b=beq, c=write, d=jmp);
+        DMux(in=inputOroutput, sel=In[13], a=Out, b=Inp);
+        // dealing with read and keyboard
+        Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[6..8], out=addressToRead);
+        Mux16(a=false, b=addressToRead, sel=read1, out=addressToRead1);
+        Or(a=read1, b=Inp, out=read);
+         
+    
+    
+         Mux16(a=false, b=fromM, sel=read, out=mainData1);
+         Mux16(a=false , b = aluOutput,sel = arthPart ,out = mainData2);
+         Or16(a=mainData1, b=mainData2, out=mainData);
+         DMux8Way(in=true, sel=In[9..11], a=r0, b=r1, c=r2, d=r3, e=r4, f=r5, g=r6, h=r7);
+         Or(a=read, b=arthPart, out=readOrarth);
+         And(a=r0, b=readOrarth, out=r10);
+         And(a=r1, b=readOrarth, out=r11);
+         And(a=r2, b=readOrarth, out=r12);
+         And(a=r3, b=readOrarth, out=r13);
+         And(a=r4, b=readOrarth, out=r14);
+         And(a=r5, b=readOrarth, out=r15);
+         And(a=r6, b=readOrarth, out=r16);
+         And(a=r7, b=readOrarth, out=r17);
+         Register(in=mainData, load=r10, out=r0out);
+         Register(in=mainData, load=r11, out=r1out);
+         Register(in=mainData, load=r12, out=r2out);
+         Register(in=mainData, load=r13, out=r3out);
+         Register(in=mainData, load=r14, out=r4out);
+         Register(in=mainData, load=r15, out=r5out);
+         Register(in=mainData, load=r16, out=r6out);
+         Register(in=mainData, load=r17, out=r7out);
+
+         
+
+// ALUpart
+         
+         Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[6..8], out=Xpart);
+         Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[3..5], out=Ypart);
+         Mux16(a=Ypart, b[0..5]=In[0..5], sel=In[12], out= FinalYpart);
+         ALU(AluOp = In[12..15], x=Xpart , y=FinalYpart ,AluOut = aluOutput1 , overflow = overPart);
+         Mux16(a=false, b=aluOutput1, sel=arthPart, out=aluOutput);
+      
+
+
+ // write in Ram and Screen part
+ 
+
+
+      Or(a=write, b=Out, out=checkIfwrite,out = writeM);
+      Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[6..8], out=dataTowrite);
+      Mux16(a=false, b=dataTowrite, sel=checkIfwrite, out=toM);
+      Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[9..11], out=RamandScreenAddress);
+      Mux16(a=false, b=RamandScreenAddress, sel=checkIfwrite, out=addressTowrite);
+      Or16(a=addressTowrite, b=addressToRead1, out=addressM);
+
+              
+   // jmp and beq part
+       // check if R1 == 0
+       Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[6..8], out=comparisonValue,out[0..7] = comparisonValue1, out[8..15] = comparisonValue2);
+       Or8Way(in=comparisonValue1, out=compareResult1);
+       Or8Way(in=comparisonValue2, out=compareResult2);
+       Or(a=compareResult1, b=compareResult2, out=compareResult);
+       Xor(a=compareResult, b=beq, out=beqcheck1);
+       And(a=beq, b=beqcheck1, out=beqcheck);
+       Or(a=beqcheck, b=jmp, out=jmpOrbeq);
+       Mux8Way16(a=r0out, b=r1out, c=r2out, d=r3out, e=r4out, f=r5out, g=r6out, h=r7out, sel=In[9..11], out=jmpOrbeqAddres);
+       Mux16(a=false, b=jmpOrbeqAddres, sel=jmpOrbeq, out=PCOut1);
+       PC(in=PCOut1, load=jmpOrbeq, inc=true, reset=Reset, out=PCOut);
+
+}

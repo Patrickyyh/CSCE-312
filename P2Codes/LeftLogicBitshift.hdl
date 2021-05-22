@@ -1,0 +1,101 @@
+//Name and UIN
+
+//LeftLogicBitshift.hdl
+
+/**
+ * Shift x left by y bits, new bits are filled in with 0
+ * You may assume the maximum shift is 8 bits (in other words, y is in the binary range 0000000000000000 to 0000000000001000)
+ */
+
+
+ // Student: Yuhao Ye
+// UIN: 529006730
+// Email: yeyuhao1234@tamu.edu
+// Section : 599
+
+
+
+CHIP LeftLogicBitshift {
+    IN x[16], y[16];
+    OUT out[16];
+
+    PARTS:
+   // Put you code here:
+
+   //shift(0)
+   Mux(a=x[0], b=false,sel=y[0], out=out0);
+   Mux(a=x[1], b=x[0], sel=y[0], out=out1);
+   Mux(a=x[2], b=x[1], sel=y[0], out=out2);
+   Mux(a=x[3], b=x[2], sel=y[0], out=out3);
+   Mux(a=x[4], b=x[3], sel=y[0], out=out4);
+   Mux(a=x[5], b=x[4], sel=y[0], out=out5);
+   Mux(a=x[6], b=x[5], sel=y[0], out=out6);
+   Mux(a=x[7], b=x[6], sel=y[0], out=out7);
+   Mux(a=x[8], b=x[7],  sel=y[0], out=out8);
+   Mux(a=x[9], b=x[8], sel=y[0], out=out9);
+   Mux(a=x[10], b=x[9], sel=y[0], out=out10);
+   Mux(a=x[11], b=x[10], sel=y[0], out=out11);
+   Mux(a=x[12], b=x[11], sel=y[0], out=out12);
+   Mux(a=x[13], b=x[12], sel=y[0], out=out13);
+   Mux(a=x[14], b=x[13], sel=y[0], out=out14);
+   Mux(a=x[15], b=x[14], sel=y[0], out=out15);
+
+   // shift(1)
+   Mux(a=out0, b=false,sel=y[1], out=out00);
+   Mux(a=out1, b=false,sel=y[1], out=out01);
+   Mux(a=out2,  b=out0, sel=y[1], out=out02);
+   Mux(a=out3,  b=out1, sel=y[1], out=out03);
+   Mux(a=out4,  b=out2, sel=y[1], out=out04);
+   Mux(a=out5,  b=out3, sel=y[1], out=out05);
+   Mux(a=out6,  b=out4, sel=y[1], out=out06);
+   Mux(a=out7,  b=out5, sel=y[1], out=out07);
+   Mux(a=out8,  b=out6, sel=y[1], out=out08);
+   Mux(a=out9,  b=out7, sel=y[1], out=out09);
+   Mux(a=out10,  b=out8,  sel=y[1], out=out010);
+   Mux(a=out11,  b=out9,  sel=y[1], out=out011);
+   Mux(a=out12, b=out10, sel=y[1], out=out012);
+   Mux(a=out13, b=out11, sel=y[1], out=out013);
+   Mux(a=out14, b=out12, sel=y[1], out=out014);
+   Mux(a=out15, b=out13, sel=y[1], out=out015);
+
+   //shift(2)
+   Mux(a=out00, b=false, sel=y[2], out=out000);
+   Mux(a=out01, b=false, sel=y[2], out=out001);
+   Mux(a=out02, b=false, sel=y[2], out=out002);
+   Mux(a=out03, b=false, sel=y[2], out=out003);
+   Mux(a=out04, b=out00, sel=y[2], out=out004);
+   Mux(a=out05, b=out01, sel=y[2], out=out005);
+   Mux(a=out06, b=out02, sel=y[2], out=out006);
+   Mux(a=out07, b=out03, sel=y[2], out=out007);
+   Mux(a=out08, b=out04, sel=y[2], out=out008);
+   Mux(a=out09, b=out05, sel=y[2], out=out009);
+   Mux(a=out010, b=out06, sel=y[2], out=out0010);
+   Mux(a=out011, b=out07, sel=y[2], out=out0011);
+   Mux(a=out012, b=out08, sel=y[2], out=out0012);
+   Mux(a=out013, b=out09, sel=y[2], out=out0013);
+   Mux(a=out014, b=out010, sel=y[2], out=out0014);
+   Mux(a=out015, b=out011, sel=y[2], out=out0015);
+
+// shift(3)
+  Mux(a=out000, b=false, sel=y[3], out=out[0]);
+  Mux(a=out001, b=false, sel=y[3], out=out[1]);
+  Mux(a=out002, b=false, sel=y[3], out=out[2]);
+  Mux(a=out003, b=false, sel=y[3], out=out[3]);
+  Mux(a=out004, b=false, sel=y[3], out=out[4]);
+  Mux(a=out005, b=false, sel=y[3], out=out[5]);
+  Mux(a=out006, b=false, sel=y[3], out=out[6]);
+  Mux(a=out007, b=false, sel=y[3], out=out[7]);
+  Mux(a=out008, b=out000, sel=y[3], out=out[8]);
+  Mux(a=out009, b=out001, sel=y[3], out=out[9]);
+  Mux(a=out0010, b=out002, sel=y[3], out=out[10]);
+  Mux(a=out0011, b=out003, sel=y[3], out=out[11]);
+  Mux(a=out0012, b=out004, sel=y[3], out=out[12]);
+  Mux(a=out0013, b=out005, sel=y[3], out=out[13]);
+  Mux(a=out0014, b=out006, sel=y[3], out=out[14]);
+  Mux(a=out0015, b=out007, sel=y[3], out=out[15]);
+
+
+
+
+
+}

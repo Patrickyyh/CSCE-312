@@ -1,0 +1,41 @@
+// NAME AND UIN
+// Yuhao Ye
+// 529006730
+
+/**
+ * Memory of 8 registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM8 {
+    IN in[16], load, address[3];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+
+    // Write in part of RAM8    
+    DMux8Way(in=load, sel=address, a=A1, b=B1, c=C1, d=D1, e=E1, f=F1, g=G1, h=H1);
+    Register(in=in, load=A1, out=out0);
+    Register(in=in, load=B1, out=out1);
+    Register(in=in, load=C1, out=out2);
+    Register(in=in, load=D1, out=out3);
+    Register(in=in, load=E1, out=out4);
+    Register(in=in, load=F1, out=out5);
+    Register(in=in, load=G1, out=out6);
+    Register(in=in, load=H1, out=out7);
+
+
+   // Read part of RAM8
+
+   Mux8Way16(a=out0, b=out1, c=out2, d=out3, e=out4, f=out5, g=out6, h=out7, sel=address, out=out);
+   
+
+
+
+
+
+
+}

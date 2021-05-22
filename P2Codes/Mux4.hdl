@@ -1,0 +1,23 @@
+
+
+// Student: Yuhao Ye
+// UIN: 529006730
+// Email: yeyuhao1234@tamu.edu
+// Section : 599
+
+
+
+CHIP Mux4{
+     IN a[4] , b[4] ,sel;
+     OUT out[4];
+     
+     PARTS:
+       Mux(a=b[0], b=a[0],   sel=sel, out=out[0]);
+       Mux(a=b[1], b=a[1],   sel=sel, out=out[1]);
+       Mux(a=b[2], b=a[2],   sel=sel, out=out[2]);
+       Mux(a=b[3], b=a[3],   sel=sel, out=out[3]);       
+
+
+
+
+}
